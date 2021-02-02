@@ -1,5 +1,5 @@
 import { IUserRepository } from '@/domain/entitygateway';
 
-export interface Storage {
+export interface IStorage {
     UserRepository(): IUserRepository
 }

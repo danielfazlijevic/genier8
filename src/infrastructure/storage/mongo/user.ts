@@ -1,8 +1,20 @@
 import { IUserRepository } from '@/domain/entitygateway'
-import { IUser } from '@/domain/entity'
+import { IUser, ITemplate } from '@/domain/entity'
 import * as mongoose from 'mongoose'
 
-const UserSchema = new mongoose.Schema({
+class UserDocument extends mongoose.Document implements IUser {
+    public constructor(
+        public uuid: string,
+        public email: string,
+        public password: string,
+        public apiKey: string,
+        public templates?: ITemplate[]
+    ) {
+        super()
+    }
+}
+
+const UserSchema = new mongoose.Schema<UserDocument>({
     uuid: String,
     emaiL: String,
     Password: String,
@@ -17,17 +29,25 @@ const UserSchema = new mongoose.Schema({
     ],
 })
 
-const UserModel = mongoose.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema)
 
-export class User implements IUserRepository {
-    findAll(): [IUser] {
+class UserRepository implements IUserRepository {
+    findAll(): Promise<[IUser]> {
         return null
     }
 
-    create(IUser): void {
+    async create(user: IUser) {
+        const newUser = new User(user)
+        newUser.save()
     }
 
-    findById(id: string): IUser {
-        return null
+    async findByEmail(email: string): Promise<IUser> {
+        const doc = await User.findOne({ email })
+        if (doc) {
+            throw new Error('not found')
+        }
+        return doc
     }
 }
+
+export const userRepository = new UserRepository()

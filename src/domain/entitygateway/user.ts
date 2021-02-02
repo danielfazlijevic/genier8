@@ -1,7 +1,7 @@
 import { IUser } from '../entity';
 
 export interface IUserRepository {
-    findAll(): [IUser]
+    findAll(): Promise<[IUser]>
     create(IUser): void
-    findById(id: string): IUser
+    findByEmail(email: string): Promise<IUser>
 }
