@@ -16,8 +16,8 @@ class UserDocument extends mongoose.Document implements IUser {
 
 const UserSchema = new mongoose.Schema<UserDocument>({
     uuid: String,
-    emaiL: String,
-    Password: String,
+    email: String,
+    password: String,
     apiKey: String,
     templates: [
         {
@@ -32,8 +32,12 @@ const UserSchema = new mongoose.Schema<UserDocument>({
 const User = mongoose.model('User', UserSchema)
 
 class UserRepository implements IUserRepository {
-    findAll(): Promise<[IUser]> {
-        return null
+    async findAll(): Promise<IUser[]> {
+        const doc = await User.find()
+        if (!doc) {
+            return []
+        }
+        return doc
     }
 
     async create(user: IUser) {
