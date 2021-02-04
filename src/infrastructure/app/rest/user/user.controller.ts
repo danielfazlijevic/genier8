@@ -1,8 +1,15 @@
-import { Controller, Body, Post, BadRequestException } from '@nestjs/common'
+import {
+    Controller,
+    Body,
+    Param,
+    Post,
+    Get,
+    BadRequestException,
+} from '@nestjs/common'
 import { Request } from 'express'
 import { CreateUserDTO } from './dto/createUserDTO'
 import { UserService } from '@/usecase'
-import { INewUser } from '@/boundary/request';
+import { INewUser } from '@/boundary/request'
 
 @Controller('user')
 export class UserController {
@@ -20,6 +27,17 @@ export class UserController {
         }
 
         await this.userService.createUser(newUser)
-        console.log('DONE')
+    }
+
+    @Get('')
+    async findAll() {
+        const res = await this.userService.findAll()
+        return res;
+    }
+
+    @Get(':email')
+    async findByEmail(@Param('email') email: string) {
+        const res = await this.userService.findByEmail(email)
+        return res;
     }
 }

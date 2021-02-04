@@ -16,4 +16,16 @@ export class UserService {
             throw error
         }
     }
+
+    async findAll() {
+        return await Store.userRepository().findAll()
+    }
+
+    async findByEmail(email: string) {
+        return await Store.userRepository().findByEmail(email)
+    }
+
+    async findByAPIKey(key: string) {
+        return await Store.userRepository().findByAPIKey(key)
+    }
 }
