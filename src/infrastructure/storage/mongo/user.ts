@@ -1,6 +1,8 @@
 import { IUserRepository } from '@/domain/entitygateway'
 import { IUser, ITemplate } from '@/domain/entity'
 import * as mongoose from 'mongoose'
+import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Injectable } from '@nestjs/common'
 
 class UserDocument extends mongoose.Document implements IUser {
     public constructor(
@@ -31,27 +33,18 @@ const UserSchema = new mongoose.Schema<UserDocument>({
 
 const User = mongoose.model('User', UserSchema)
 
-class UserRepository implements IUserRepository {
+export class UserRepository implements IUserRepository {
     async findAll(): Promise<IUser[]> {
-        const doc = await User.find()
-        if (!doc) {
-            return []
-        }
-        return doc
+        throw new Error('no')
     }
 
     async create(user: IUser) {
-        const newUser = new User(user)
-        newUser.save()
+        const u = new User(user)
+        u.apiKey = '12345'
+        await u.save()
     }
 
     async findByEmail(email: string): Promise<IUser> {
-        const doc = await User.findOne({ email })
-        if (doc) {
-            throw new Error('not found')
-        }
-        return doc
+        throw new Error('not implemented')
     }
 }
-
-export const userRepository = new UserRepository()
