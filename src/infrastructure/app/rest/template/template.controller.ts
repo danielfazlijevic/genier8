@@ -7,7 +7,7 @@ export class TemplateController {
     constructor(private templateService: TemplateService) {}
 
     @Post('/compile')
-    compileExample(@Body() compileTemplateDto: CompileTemplateDto){
+    compileExample(@Body() compileTemplateDto: CompileTemplateDto) {
        return this.templateService.compile(compileTemplateDto);
     }
 }
