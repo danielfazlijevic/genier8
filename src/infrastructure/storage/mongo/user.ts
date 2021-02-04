@@ -59,7 +59,7 @@ export class UserRepository implements IUserRepository {
 
     async findByAPIKey(apiKey: string): Promise<IUser> {
         const user = await User.findOne({ apiKey })
-        console.log(user);
+        console.log(user)
         if (!user) {
             throw new Error('Not found')
         }

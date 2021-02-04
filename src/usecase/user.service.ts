@@ -1,16 +1,18 @@
-import { Injectable } from '@nestjs/common'
-import { Store } from '@/infrastructure/storage'
+import { Injectable, Inject } from '@nestjs/common'
 import { INewUser } from '@/boundary/request'
 import { User } from '@/domain/entity'
+import { IStorage } from '@/ports'
 
 @Injectable()
 export class UserService {
+    constructor(@Inject('Storage') private storage: IStorage) {}
+
     async createUser(newUser: INewUser) {
         const user = new User()
         user.email = newUser.email
         user.password = newUser.password
         try {
-            await Store.userRepository().create(user)
+            await this.storage.userRepository().create(user)
         } catch (error) {
             console.log('ERROR: User service could not create user ', newUser)
             throw error
@@ -18,14 +20,14 @@ export class UserService {
     }
 
     async findAll() {
-        return await Store.userRepository().findAll()
+        return await this.storage.userRepository().findAll()
     }
 
     async findByEmail(email: string) {
-        return await Store.userRepository().findByEmail(email)
+        return await this.storage.userRepository().findByEmail(email)
     }
 
     async findByAPIKey(key: string) {
-        return await Store.userRepository().findByAPIKey(key)
+        return await this.storage.userRepository().findByAPIKey(key)
     }
 }

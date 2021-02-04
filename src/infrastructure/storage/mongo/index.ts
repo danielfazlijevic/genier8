@@ -1,20 +1,18 @@
 import { IStorage } from '@/ports'
 import { IUserRepository } from '@/domain/entitygateway'
 import { InjectModel, getModelToken, MongooseModule } from '@nestjs/mongoose'
-import { Module } from '@nestjs/common'
-import { UserRepository  } from './user'
-import * as mongoose from 'mongoose';
+import { Injectable, Module } from '@nestjs/common'
+import { UserRepository } from './user'
 
-mongoose.connect(process.env.MONGO_URI,{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-
-
+@Injectable()
 export class MongoStore implements IStorage {
-    #userRepository: IUserRepository
-    public constructor () {
-        this.#userRepository = new UserRepository()
+    private _userRepository: IUserRepository
+
+    public constructor() {
+        this._userRepository = new UserRepository()
     }
 
     userRepository(): IUserRepository {
-        return this.#userRepository;
+        return this._userRepository
     }
 }
