@@ -4,6 +4,8 @@ import * as mongoose from 'mongoose'
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Injectable } from '@nestjs/common'
 
+// TODO: Implement password hashing!
+
 class UserDocument extends mongoose.Document implements IUser {
     public constructor(
         public uuid: string,
@@ -64,5 +66,19 @@ export class UserRepository implements IUserRepository {
             throw new Error('Not found')
         }
         return makeUser(user)
+    }
+
+    async findByEmailAndPassword(
+        email: string,
+        password: string
+    ): Promise<IUser> {
+        const user = await User.findOne({ email, password })
+        if (!user) {
+            throw new Error(
+                'Could not find user by email and password: '+
+                email
+            )
+        }
+        return user
     }
 }

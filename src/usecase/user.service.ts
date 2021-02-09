@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common'
 import { INewUser } from '@/boundary/request'
-import { User } from '@/domain/entity'
+import { IUser, User } from '@/domain/entity'
 import { IStorage } from '@/ports'
 
 @Injectable()
@@ -29,5 +29,11 @@ export class UserService {
 
     async findByAPIKey(key: string) {
         return await this.storage.userRepository().findByAPIKey(key)
+    }
+
+    async findByEmailAndPassword(email: string, pass: string): Promise<IUser> {
+        return await this.storage
+            .userRepository()
+            .findByEmailAndPassword(email, pass)
     }
 }

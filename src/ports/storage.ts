@@ -1,4 +1,4 @@
-import { IUserRepository } from '@/domain/entitygateway'
+import { IUserRepository, ITemplateRepository } from '@/domain/entitygateway'
 
 export interface IStorage {
     userRepository(): IUserRepository

@@ -1,6 +1,6 @@
-import { TemplateService } from './template.service'
+import { TemplateService } from '@/usecase'
 import { CompileTemplateDto, ICreateNewTemplateDTO } from './dto'
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Post, Get, Param } from '@nestjs/common'
 
 @Controller('template')
 export class TemplateController {
@@ -8,7 +8,7 @@ export class TemplateController {
 
     @Post('/compile')
     compileExample(@Body() compileTemplateDto: CompileTemplateDto) {
-        return this.templateService.compile(compileTemplateDto)
+            return { error: 'not implemented' }
     }
 
     @Post('')
@@ -18,6 +18,6 @@ export class TemplateController {
 
     @Get(':id')
     getTemplateByID(@Param('id') id: string) {
-        console.log(templateService.findById(id))
+        console.log(this.templateService.findById(id))
     }
 }

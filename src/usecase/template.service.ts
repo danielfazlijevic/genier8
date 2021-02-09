@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { IStorage } from '@/ports';
 
 @Injectable()
 export class TemplateService {

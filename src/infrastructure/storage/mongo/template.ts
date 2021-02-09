@@ -30,15 +30,7 @@ const TemplateSchema = new mongoose.Schema<TemplateDocument>({
 const Template = mongoose.model('Template', TemplateSchema)
 
 export class TemplateRepository implements ITemplateRepository {
-    async findByUserUUID(uuid: string): Promise<ITemplate[]> {
-        const templates = await Template.find({ user_id: uuid }).exec()
-        console.log(templates)
-        return []
-    }
-
-    async createByUserUUID(uuid: string): Promise<void> {}
-
-    async findByUUID(uuid: string): Promise<ITemplate> {
+    async findById(uuid: string): Promise<ITemplate> {
         const template = await Template.findOne({ _id: uuid }).exec()
         return template
     }

@@ -5,4 +5,5 @@ export interface IUserRepository {
     create(IUser): void
     findByEmail(email: string): Promise<IUser>
     findByAPIKey(key: string): Promise<IUser> 
+    findByEmailAndPassword(email: string, password: string): Promise<IUser>
 }
