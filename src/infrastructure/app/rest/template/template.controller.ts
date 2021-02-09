@@ -8,7 +8,7 @@ export class TemplateController {
 
     @Post('/compile')
     compileExample(@Body() compileTemplateDto: CompileTemplateDto) {
-            return { error: 'not implemented' }
+        return { error: 'not implemented' }
     }
 
     @Post('')
