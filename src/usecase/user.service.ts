@@ -32,8 +32,9 @@ export class UserService {
     }
 
     async findByEmailAndPassword(email: string, pass: string): Promise<IUser> {
-        return await this.storage
-            .userRepository()
-            .findByEmailAndPassword(email, pass)
+        return await this.storage.userRepository().findByEmailAndPassword(
+            email,
+            pass
+        )
     }
 }

@@ -26,7 +26,7 @@ export class StorageModule {
                 })
 
                 if (process.env.PERSISTENCY === 'mongo') {
-                    return MongoStore
+                    return new MongoStore()
                 }
             },
         }

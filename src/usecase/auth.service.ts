@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { UserService } from './user.service'
 import { IUser } from '@/domain/entity'
+import { IStorage } from '@/ports'
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService) {}
+    constructor(@Inject('Storage') private storage: IStorage) {}
 
     async validateUser(email: string, pass: string): Promise<IUser> {
+        console.log(this.storage.userRepository)
         try {
-            const user = await this.userService.findByEmailAndPassword(
+            const user = await this.storage.userRepository().findByEmailAndPassword(
                 email,
                 pass
             )
