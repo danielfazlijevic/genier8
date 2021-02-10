@@ -11,7 +11,7 @@ import { Request } from 'express'
 import { CreateUserDTO } from './dto/createUserDTO'
 import { UserService } from '@/usecase'
 import { INewUser } from '@/boundary/request'
-import { JwtAuthGuard } from '@/usecase'
+import { JwtAuthGuard } from '@/infrastructure/auth'
 
 @Controller('user')
 export class UserController {
