@@ -5,11 +5,13 @@ import {
     Post,
     Get,
     BadRequestException,
+        UseGuards
 } from '@nestjs/common'
 import { Request } from 'express'
 import { CreateUserDTO } from './dto/createUserDTO'
 import { UserService } from '@/usecase'
 import { INewUser } from '@/boundary/request'
+import { JwtAuthGuard } from '@/usecase'
 
 @Controller('user')
 export class UserController {
@@ -29,6 +31,7 @@ export class UserController {
         await this.userService.createUser(newUser)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('')
     async findAll() {
         const res = await this.userService.findAll()
