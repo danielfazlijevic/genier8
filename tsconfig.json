@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+	"extends": "@tsconfig/svelte/tsconfig.json",
         "module": "commonjs",
         "declaration": true,
         "removeComments": true,
