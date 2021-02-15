@@ -1,30 +1,48 @@
 import { TemplateService } from '@/usecase'
 import { CompileTemplateDto, ICreateNewTemplateDTO } from './dto'
-import { Body, Controller, Post, Get, Param } from '@nestjs/common'
+import { Body, Controller, Res, Post, Get, Param, Header } from '@nestjs/common'
+import { Response } from 'express'
 
 const path = require('path')
 const fs = require('fs-extra')
 
 @Controller('template')
 export class TemplateController {
-	constructor(private templateService: TemplateService) {}
+    constructor(private templateService: TemplateService) {}
 
-	@Post('/compile')
-	async compileExample(@Body() compileTemplateDto: CompileTemplateDto) {
-		const fp = path.join(process.cwd(), 'src', 'usecase', 'templates', 'test.hbs')
-		const content = await fs.readFile(fp, 'utf-8')
+    @Post('/generate')
+    @Header('Content-Type', 'application/pdf')
+    async generatePDF(
+        @Body() compileTemplateDto: CompileTemplateDto,
+        @Res() res: Response
+    ) {
+        const fp = path.join(
+            process.cwd(),
+            'src',
+            'usecase',
+            'templates',
+            'test.hbs'
+        )
+        const content = await fs.readFile(fp, 'utf-8')
 
-		const result = await this.templateService.createHTML(content, {name: 'Nikola' })
-		console.log(result)
-	}
+        const pdfBuffer = await this.templateService.createPDF(content, {
+            name: 'Nikola',
+        })
+        const stream = this.templateService.createReadableStreamFrom(pdfBuffer)
+        res.set({
+            'Content-Type': 'application/pdf',
+            'Content-Length': pdfBuffer.length,
+        })
+        stream.pipe(res)
+    }
 
-	@Post('')
-	createNewTemplate(@Body() newTemplate: ICreateNewTemplateDTO) {
-		console.log(newTemplate)
-	}
+    @Post('')
+    createNewTemplate(@Body() newTemplate: ICreateNewTemplateDTO) {
+        console.log(newTemplate)
+    }
 
-	@Get(':id')
-	getTemplateByID(@Param('id') id: string) {
-		console.log(this.templateService.findById(id))
-	}
+    @Get(':id')
+    getTemplateByID(@Param('id') id: string) {
+        console.log(this.templateService.findById(id))
+    }
 }
