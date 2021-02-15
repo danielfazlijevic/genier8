@@ -1,5 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common'
+import { INewTemplate } from '@/boundary/request'
 import { IStorage } from '@/ports'
+import { Template } from '@/domain/entity'
 import { Readable } from 'stream'
 import * as hbs from 'handlebars'
 
@@ -38,5 +40,17 @@ export class TemplateService {
         stream.push(b)
         stream.push(null)
         return stream
+    }
+
+    async saveTemplate(email: string, tmpl: INewTemplate) {
+        const user = await this.storage.userRepository().findByEmail(email)
+
+        const template = new Template()
+        template.name = tmpl.name
+        template.tmpl = tmpl.tmpl
+        template.params = tmpl.params
+        template.user = user
+
+        await this.storage.templateRepository().create(template)
     }
 }

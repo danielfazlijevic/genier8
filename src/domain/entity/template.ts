@@ -1,4 +1,4 @@
-import { IUser } from './user';
+import { IUser } from './user'
 
 export interface ITemplate {
     uuid: string
@@ -6,4 +6,14 @@ export interface ITemplate {
     tmpl: string
     params: any
     user: IUser
+}
+
+export class Template implements ITemplate {
+    constructor(
+        public uuid: string = '',
+        public name: string = '',
+        public tmpl: string = '',
+        public params: any = {},
+        public user: IUser = null
+    ) {}
 }

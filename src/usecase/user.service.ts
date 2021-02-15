@@ -8,6 +8,7 @@ export class UserService {
     constructor(@Inject('Storage') private storage: IStorage) {}
 
     async createUser(newUser: INewUser) {
+        console.log(this.storage)
         const user = new User()
         user.email = newUser.email
         user.password = newUser.password
@@ -32,9 +33,8 @@ export class UserService {
     }
 
     async findByEmailAndPassword(email: string, pass: string): Promise<IUser> {
-        return await this.storage.userRepository().findByEmailAndPassword(
-            email,
-            pass
-        )
+        return await this.storage
+            .userRepository()
+            .findByEmailAndPassword(email, pass)
     }
 }

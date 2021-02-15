@@ -1,6 +1,15 @@
 import { TemplateService } from '@/usecase'
 import { CompileTemplateDto, ICreateNewTemplateDTO } from './dto'
-import { Body, Controller, Res, Post, Get, Param, Header } from '@nestjs/common'
+import {
+    Query,
+    Body,
+    Controller,
+    Res,
+    Post,
+    Get,
+    Param,
+    Header,
+} from '@nestjs/common'
 import { Response } from 'express'
 
 const path = require('path')
@@ -37,8 +46,13 @@ export class TemplateController {
     }
 
     @Post('')
-    createNewTemplate(@Body() newTemplate: ICreateNewTemplateDTO) {
-        console.log(newTemplate)
+    createNewTemplate(@Body() newTemplate: ICreateNewTemplateDTO, @Query() q) {
+        const newTmpl = {
+            tmpl: newTemplate.tmpl,
+            name: newTemplate.name,
+            params: newTemplate.params,
+        }
+        this.templateService.saveTemplate(q.email, newTmpl)
     }
 
     @Get(':id')

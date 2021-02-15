@@ -7,6 +7,5 @@ import { StorageModule } from '@/infrastructure/storage'
     imports: [StorageModule.forRoot()],
     controllers: [UserController],
     providers: [UserService],
-    exports: [UserService],
 })
 export class UserModule {}

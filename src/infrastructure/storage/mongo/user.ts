@@ -33,10 +33,14 @@ const UserSchema = new mongoose.Schema<UserDocument>({
     ],
 })
 
-const User = mongoose.model('User', UserSchema)
+export const User = mongoose.model('User', UserSchema)
 
 function makeUser(u: any): IUser {
     return new UserEntity(u._id, u.email, u.password, u.apiKey, u.templates)
+}
+
+function newUser(u: IUser): IUser & mongoose.Document {
+    return new UserDocument(u.uuid, u.email, u.password, u.apiKey, u.templates)
 }
 
 export class UserRepository implements IUserRepository {
@@ -46,7 +50,7 @@ export class UserRepository implements IUserRepository {
     }
 
     async create(user: IUser) {
-        const u = new User(user)
+        const u = newUser(user)
         u.apiKey = '12345'
         await u.save()
     }
@@ -75,8 +79,7 @@ export class UserRepository implements IUserRepository {
         const user = await User.findOne({ email, password })
         if (!user) {
             throw new Error(
-                'Could not find user by email and password: '+
-                email
+                'Could not find user by email and password: ' + email
             )
         }
         return user
