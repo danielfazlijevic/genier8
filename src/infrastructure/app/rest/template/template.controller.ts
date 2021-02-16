@@ -19,24 +19,19 @@ const fs = require('fs-extra')
 export class TemplateController {
     constructor(private templateService: TemplateService) {}
 
-    @Post('/generate')
+    @Post('/:id/generate')
     @Header('Content-Type', 'application/pdf')
     async generatePDF(
+        @Param('id') id: string,
         @Body() compileTemplateDto: CompileTemplateDto,
         @Res() res: Response
     ) {
-        const fp = path.join(
-            process.cwd(),
-            'src',
-            'usecase',
-            'templates',
-            'test.hbs'
-        )
-        const content = await fs.readFile(fp, 'utf-8')
+        const t = await this.templateService.findById(id)
 
-        const pdfBuffer = await this.templateService.createPDF(content, {
-            name: 'Nikola',
-        })
+        const pdfBuffer = await this.templateService.createPDF(
+            t.tmpl,
+            compileTemplateDto.params
+        )
         const stream = this.templateService.createReadableStreamFrom(pdfBuffer)
         res.set({
             'Content-Type': 'application/pdf',
