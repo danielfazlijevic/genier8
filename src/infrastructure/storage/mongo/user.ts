@@ -18,6 +18,15 @@ class UserDocument extends mongoose.Document implements IUser {
     }
 }
 
+interface MUser extends IUser {
+    _id?: string
+    uuid?: string
+    email: string
+    password: string
+    apiKey: string
+    templates?: ITemplate[]
+}
+
 const UserSchema = new mongoose.Schema<UserDocument>({
     uuid: String,
     email: String,
@@ -39,7 +48,7 @@ function makeUser(u: any): IUser {
     return new UserEntity(u._id, u.email, u.password, u.apiKey, u.templates)
 }
 
-function newUser(u: IUser): IUser & mongoose.Document {
+function newUser(u: MUser): MUser & mongoose.Document {
     u._id = u.uuid
     return new User(u)
 }
