@@ -40,7 +40,8 @@ function makeUser(u: any): IUser {
 }
 
 function newUser(u: IUser): IUser & mongoose.Document {
-    return new UserDocument(u.uuid, u.email, u.password, u.apiKey, u.templates)
+    u._id = u.uuid
+    return new User(u)
 }
 
 export class UserRepository implements IUserRepository {
