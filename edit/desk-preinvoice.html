@@ -1,0 +1,210 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apercu-font@1.0.0/stylesheet.min.css">
+
+<style>
+  body {
+    font-size: 0.9rem;
+    padding-bottom: 10px;
+    font-family: 'Apercu', sans-serif;
+    padding: 15px;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .logo {
+    height: 60px;
+    padding: 5px 0 10px 0;
+  }
+
+  .w-1-3 {
+    width: 33.3333333%;
+  }
+
+  .w-2-3 {
+    width: 66.666666%;
+  }
+
+  .w-1-5 {
+    width: 20%;
+  }
+
+  .signition {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .w-1-2 {
+    width: 50%;
+  }
+
+  .text-end {
+    text-align: end;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .desk-line {
+    width: 66.67%;
+    height: 8px;
+    background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgba(0, 0, 255, 1) 32.33%, rgba(0, 1, 23, 1) 32.33%, rgba(0, 1, 23, 1) 33%, rgba(231, 11, 24, 1) 33%, rgba(231, 11, 24, 1) 66.33%, rgba(200, 11, 32, 1) 66.33%, rgba(200, 11, 32, 1) 67%, rgba(223, 72, 239, 1) 67%);
+  }
+
+  .main {
+    position: relative;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-right: 0px;
+  }
+
+  footer a {
+    text-decoration: none;
+    color: black;
+    width: 16.66%;
+  }
+</style>
+
+<body>
+  <div class="main">
+    <div class="main-body">
+      <div class="logo">
+        <img style="height: 100%;" src="http://desk.dev.4bees.io/logo.png" alt="Desk & More" />
+      </div>
+      <div>
+        <div>{{ deskAddr }}</div>
+        <div>Telefon: {{ deskPhone }}</div>
+        <div>Matični broj: {{ deskPIN }}</div>
+        <div>PIB: {{ deskVIN }}</div>
+        <div>Tekući račun: {{ deskBankAccount }}</div>
+      </div>
+      <div style="margin-top: 2em; font-weight: bold; font-style: italic;">
+        Maloprodajni objekat: Desk&More<br />
+        {{ preInvoiceLocation }}
+      </div>
+      <div style="margin-top: 2em; font-weight: bold;">
+        {{ dateAndPlace }}
+      </div>
+      <div style="margin-top: 2em;">
+        <h2 style="text-align: center;">
+          PREDRAČUN {{ preInvoiceNumber }}
+        </h2>
+      </div>
+      <div>
+        <div>Naziv klijenta: {{ clientName }}</div>
+        <div>Adresa klijenta: {{ clientAddress}}</div>
+        <div>MB: {{ clientPIN }}</div>
+        <div>PIB: {{ clientVIN }}</div>
+      </div>
+
+      <!-- Tabela -->
+      <div>
+        <!-- Header -->
+        <div style="width: 100%;">
+          <div style="display: flex;" class="text-center">
+            <div class="w-1-3">
+              <div style="font-weight: bold; text-align: center;">
+                Opis
+              </div>
+            </div>
+            <div class="w-2-3" style="font-weight: bold; text-align: center; display: flex;">
+              <div class="w-1-5">
+                Broj dana
+              </div>
+              <div class="w-1-5">
+                Osnovica
+              </div>
+              <div class="w-1-5">
+                PDV
+              </div>
+              <div class="w-1-5">
+                Iznos PDV-a
+              </div>
+              <div class="w-1-5">
+                Iznos sa PDV-om
+              </div>
+            </div>
+          </div>
+          <!-- BODY -->
+          {{#each preInvoiceRows}}
+          <div style="width: 100%;" class="text-center">
+            <div style="display: flex;">
+              <div class="w-1-3">
+                <div style="text-align: start;">
+                  {{this.description}}
+                </div>
+              </div>
+              <div class="w-2-3 text-center" style="text-align: center; display: flex;">
+                <div class="w-1-5">
+                  {{this.numberOfDays}}
+                </div>
+                <div class="w-1-5">
+                  {{this.taxBase}}
+                </div>
+                <div class="w-1-5">
+                  {{this.taxRate}}
+                </div>
+                <div class="w-1-5">
+                  {{this.taxAmount}}
+                </div>
+                <div class="w-1-5">
+                  {{this.totalWithTaxation}}
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+
+      <div style="width: 100%; margin-top: 2em;">
+        <div class="text-center" style="display: flex;">
+          <div class="w-1-3 text-center">
+            <h3>UKUPNO ZA UPLATU {{this.currency}}</h3>
+          </div>
+          <div class="w-2-3">
+            <div style="display: flex;">
+              <div class="w-1-5"></div>
+              <div class="w-1-5">
+                <h3>{{taxBase}}</h3>
+              </div>
+              <div class="w-1-5"></div>
+              <div class="w-1-5">
+                <h3>{{taxAmount}}</h3>
+              </div>
+              <div class="w-1-5">
+                <h3>{{totalWithTaxation}}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 3em;">
+        <div>Napomena o poreskom oslobođenju: {{ taxNote }}</div>
+        <div>
+          <br /> <br />
+          {{ paymentText }}
+        </div>
+      </div>
+    </div>
+    <div class="signition">
+      <div>Za {{ footerFor }}</div>
+      <div>Obradio/la: {{ creatorName }}</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <a href="https://www.deskandmore.rs">www.deskandmore.rs</a>
+    <a href="mailto:info@deskandmore.rs">info@deskandmore.rs</a>
+    <div class="desk-line"></div>
+  </footer>
+</body>

@@ -17,3 +17,4 @@ export class User implements IUser {
         public templates?: ITemplate[]
     ) {}
 }
+

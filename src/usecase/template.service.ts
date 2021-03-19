@@ -23,13 +23,21 @@ export class TemplateService {
 
     async createPDF(template: string, props: any): Promise<Buffer> {
         const html = await compile(template, props)
+     
         const browser = await playwright['chromium'].launch()
         const page = await browser.newPage()
         await page.setContent(html)
+        console.log(html);
         await page.emulateMedia({ media: 'screen' })
         const pdfResponse = await page.pdf({
             format: 'A4',
             printBackground: true,
+            margin: {
+                top: 15,
+                bottom: 15,
+                right: 15,
+                left: 15
+            }
         })
         await browser.close()
         return pdfResponse
