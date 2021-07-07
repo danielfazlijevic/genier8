@@ -20,6 +20,9 @@ const compile = async function (hbsTmpl: string, data: any): Promise<string> {
     return await hbs.compile(hbsTmpl)(data)
 }
 
+
+const defaultOptions = { media: 'screen' }
+
 @Injectable()
 export class TemplateService {
     constructor(@Inject('Storage') private storage: IStorage) {}
@@ -28,7 +31,7 @@ export class TemplateService {
         return await this.storage.templateRepository().findById(id)
     }
 
-    async createPDF(template: string, props: any): Promise<Buffer> {
+    async createPDF(template: string, props: any, options: any = defaultOptions): Promise<Buffer> {
         const html = await compile(template, props)
      
         const browser = await playwright['chromium'].launch()
@@ -37,7 +40,7 @@ export class TemplateService {
         console.log('HTML: ');
         console.log(html);
         console.log('================================');
-        await page.emulateMedia({ media: 'screen' })
+        await page.emulateMedia({ media: options.media})
         const pdfResponse = await page.pdf({
             format: 'A4',
             printBackground: true,
