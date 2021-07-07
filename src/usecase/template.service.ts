@@ -9,6 +9,13 @@ const fs = require('fs-extra')
 const path = require('path')
 const playwright = require('playwright')
 
+
+hbs.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+});
+
+
+
 const compile = async function (hbsTmpl: string, data: any): Promise<string> {
     return await hbs.compile(hbsTmpl)(data)
 }
