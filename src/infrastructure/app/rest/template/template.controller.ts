@@ -28,14 +28,10 @@ export class TemplateController {
     ) {
         const t = await this.templateService.findById(id)
 
-        const options = {
-            media: 'print'
-        }
-
         const pdfBuffer = await this.templateService.createPDF(
             t.tmpl,
             compileTemplateDto.params,
-            options
+            compileTemplateDto.options
         )
         const stream = this.templateService.createReadableStreamFrom(pdfBuffer)
         res.set({

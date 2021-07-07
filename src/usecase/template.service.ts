@@ -9,17 +9,13 @@ const fs = require('fs-extra')
 const path = require('path')
 const playwright = require('playwright')
 
-
-hbs.registerHelper('json', function(context) {
-    return JSON.stringify(context);
-});
-
-
+hbs.registerHelper('json', function (context) {
+    return JSON.stringify(context)
+})
 
 const compile = async function (hbsTmpl: string, data: any): Promise<string> {
     return await hbs.compile(hbsTmpl)(data)
 }
-
 
 const defaultOptions = { media: 'screen' }
 
@@ -31,16 +27,28 @@ export class TemplateService {
         return await this.storage.templateRepository().findById(id)
     }
 
-    async createPDF(template: string, props: any, options: any = defaultOptions): Promise<Buffer> {
+    async createPDF(
+        template: string,
+        props: any,
+        options: any = defaultOptions
+    ): Promise<Buffer> {
         const html = await compile(template, props)
-     
+
         const browser = await playwright['chromium'].launch()
         const page = await browser.newPage()
         await page.setContent(html)
-        console.log('HTML: ');
-        console.log(html);
-        console.log('================================');
-        await page.emulateMedia({ media: options.media})
+        console.log('HTML: ')
+        console.log(html)
+        console.log('================================')
+
+        if (options.size) {
+            await page.setViewportSize({
+                width: options.size.width,
+                height: options.size.height,
+            })
+        }
+
+        await page.emulateMedia({ media: options.media })
         const pdfResponse = await page.pdf({
             format: 'A4',
             printBackground: true,
@@ -48,8 +56,8 @@ export class TemplateService {
                 top: 15,
                 bottom: 15,
                 right: 15,
-                left: 15
-            }
+                left: 15,
+            },
         })
         await browser.close()
         return pdfResponse
