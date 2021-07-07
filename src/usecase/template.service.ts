@@ -34,7 +34,10 @@ export class TemplateService {
         const browser = await playwright['chromium'].launch()
         const page = await browser.newPage()
         await page.setContent(html)
+        console.log('HTML: ');
         console.log(html);
+        console.log('================================');
+        await page.waitForNavigation({ timeout: 400 })
         await page.emulateMedia({ media: 'screen' })
         const pdfResponse = await page.pdf({
             format: 'A4',
