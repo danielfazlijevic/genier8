@@ -53,10 +53,10 @@ export class TemplateService {
             format: 'A4',
             printBackground: true,
             margin: {
-                top: 15,
-                bottom: 15,
-                right: 15,
-                left: 15,
+                top: 0,
+                bottom: 0,
+                right: 0,
+                left: 0,
             },
         })
         await browser.close()
