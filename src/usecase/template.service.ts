@@ -17,7 +17,7 @@ const compile = async function (hbsTmpl: string, data: any): Promise<string> {
     return await hbs.compile(hbsTmpl)(data)
 }
 
-const defaultOptions = { media: 'screen' }
+const defaultOptions = { media: 'screen', format: 'A4' }
 
 @Injectable()
 export class TemplateService {
@@ -53,7 +53,7 @@ export class TemplateService {
 
         await page.emulateMedia({ media: options.media })
         const pdfResponse = await page.pdf({
-            format: 'A4',
+            format: options.format,
             printBackground: true,
             margin: {
                 top: 0,
