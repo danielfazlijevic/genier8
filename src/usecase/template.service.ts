@@ -53,10 +53,7 @@ export class TemplateService {
 
         await page.emulateMedia({ media: options.media })
             
-        await page.evaluate(() => {
-        // if this doesn't work, you can try to increase 0 to a higher number (i.e. 100)
-            return new Promise((resolve) => setTimeout(resolve, 100));
-        });
+        await page.waitForTimeout(144);
             
         const pdfResponse = await page.pdf({
             format: options.format,
